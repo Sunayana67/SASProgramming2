@@ -1,0 +1,24 @@
+/*
+
+LESSON 1, PRACTICE 4
+a) Write a DATA step that creates temporary SAS tables named camping and lodging and reads the pg2.np_2017 table.
+b) Compute a new column, CampTotal, that is the sum of CampingOther, CampingTent, CampingRV, and CampingBackcountry.
+c) Format CampTotal so that values are displayed with commas.
+d) The camping table has the following specifications:
+   1. includes rows if CampTotal is greater than zero
+   2. contains the ParkName, Month, DayVisits, and CampTotal columns
+e) The lodging table has the following specifications:
+   1. includes rows where LodgingOther is greater than zero
+   2.contains only the ParkName, Month, DayVisits, and LodgingOther columns
+f) Submit the program and verify the output. The notes in the SAS log indicate how many rows are in each table.
+
+*/
+
+data camping(keep=ParkName Month DayVisits CampTotal)
+	 lodging(keep=ParkName Month DayVisits LodgingOther);
+	set pg2.np_2017;
+	CampTotal=sum(of Camping:);
+	if CampTotal > 0 then output camping;
+	if LodgingOther > 0 then output lodging;
+	format CampTotal comma15.;
+run;
