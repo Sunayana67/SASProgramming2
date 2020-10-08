@@ -1,0 +1,32 @@
+/*
+
+LESSON 2, PRACTICE 5 
+1) Create a new program.
+   a. Create a sorted copy of sashelp.shoes that is ordered by Region and Product.
+   b. Use the DATA step to read the sorted table and create a new table named profitummary.
+   c. Create a column named Profit that is the difference between Sales and Returns.
+   d. Create an accumulating column named TotalProfit that is a running total of Profit within each value of Region and Product.
+   e. Reset TotalProfit for each new combination of Region and Product.
+   f. Submit the program and verify that TotalProfit is accurate.
+2) Modify the DATA step.
+   a. Include only the last row for each Region and Product combination.
+   b. Keep Region, Product, and TotalProfit.
+   c. Format TotalProfit as a currency value.
+   d. Submit the program and examine the output data.
+   
+*/
+
+proc sort data=sashelp.shoes out=sort_shoes;
+	by Region Product;
+run;
+
+data profitsummary;
+	set sort_shoes;
+	by Region Product;
+	Profit=Sales-Returns;
+	if first.Product then TotalProfit=0;
+	TotalProfit+Profit;
+	if last.Product=1;
+	keep Region Product TotalProfit;
+	format TotalProfit dollar12.;
+run;
