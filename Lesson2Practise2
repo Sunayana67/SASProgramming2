@@ -1,0 +1,27 @@
+/*
+
+LESSON 2, PRACTICE 2
+1) Create a table, parkTypeTraffic, from the pg2.np_yearlytraffic table. Use the following specifications:
+   a. Read only the rows from the input table where ParkType is National Monument or National Park.
+   b. Create two new columns named MonumentTraffic and ParkTraffic. The value of each column should be increased by the value of Count for that park type.
+   c. Format the new columns so that values are displayed with commas.
+2) Create a listing report of parkTypeTraffic.
+   a. Use Accumulating Traffic Totals for Park Types as the report title.
+   b. Display the columns in this order: ParkType, ParkName, Location, Count, MonumentTraffic, and ParkTraffic.
+   c. Submit the program and view the results.
+
+*/
+
+data work.parktypetraffic;
+	set pg2.np_yearlyTraffic;
+	where ParkType in ("National Monument", "National Park");
+	if ParkType = 'National Monument' then MonumentTraffic+Count;
+	else ParkTraffic+Count;
+	format MonumentTraffic ParkTraffic comma15.;
+run;
+
+title 'Accumulating Traffic Totals for Park Types';
+proc print data=work.parktypetraffic;
+	var ParkType ParkName Location Count MonumentTraffic ParkTraffic;
+run;
+title;
