@@ -1,0 +1,29 @@
+/*
+
+LESSON 2, PRACTICE 3
+
+Create a table, cuyahoga_maxtraffic, from the pg2.np_monthlytraffic table. Use the following specifications:
+a) Include only rows where ParkName is equal to Cuyahoga Valley NP.
+b) Create three columns: TrafficMax, MonthMax, and LocationMax. Initialize TrafficMax to 0.
+c) If the current traffic count is greater than the value in TrafficMax, then:
+   1. set the value of TrafficMax equal to Count
+   2. set the value of MonthMax equal to Month, and
+   3. set the value of LocationMax equal to Location
+d) Format the Count and TrafficMax columns so that values are displayed with commas.
+e) Keep only the Location, Month, Count, TrafficMax, MonthMax, and LocationMax columns in the output table.
+f) Submit the program and examine the ouput data.
+
+*/
+
+data cuyahoga_maxtraffic;
+	set pg2.np_monthlyTraffic;
+	where ParkName = 'Cuyahoga Valley NP';
+	retain TrafficMax 0 MonthMax LocationMax;
+	if Count>TrafficMax then do;
+		TrafficMax=Count;
+		MonthMax=Month;
+		LocationMax=Location;
+	end;
+	format Count TrafficMax comma15.;
+	keep Location Month Count TrafficMax MonthMax LocationMax;
+run;
